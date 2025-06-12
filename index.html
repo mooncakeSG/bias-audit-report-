@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bias Audit Report Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="icon">🛡️</i> Bias Audit Dashboard</h1>
+                <p>Comprehensive ML Model Fairness Analysis</p>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- Upload Section -->
+            <section class="upload-section card">
+                <h2><i class="icon">📊</i> Data Upload & Configuration</h2>
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-content">
+                        <i class="upload-icon">📁</i>
+                        <p>Upload your dataset (CSV format)</p>
+                        <input type="file" id="fileInput" accept=".csv" hidden>
+                        <div class="upload-buttons">
+                            <button type="button" class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                                Choose File
+                            </button>
+                            <button type="button" class="btn btn-outline" onclick="loadSampleData()">
+                                📊 Use Sample Data
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="config-section" id="configSection" style="display: none;">
+                    <h3>Column Configuration</h3>
+                    <div class="config-grid">
+                        <div class="config-group">
+                            <label for="targetColumn">Target Column:</label>
+                            <select id="targetColumn" class="form-select">
+                                <option value="">Select target column...</option>
+                            </select>
+                        </div>
+                        
+                        <div class="config-group">
+                            <label for="predictionColumn">Prediction Column:</label>
+                            <select id="predictionColumn" class="form-select">
+                                <option value="">Select prediction column...</option>
+                            </select>
+                        </div>
+                        
+                        <div class="config-group">
+                            <label for="protectedAttributes">Protected Attributes:</label>
+                            <div id="protectedAttributesContainer" class="checkbox-container">
+                                <!-- Dynamic checkboxes will be added here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="btn btn-success" id="runAuditBtn" onclick="runBiasAudit()">
+                        <span class="btn-text">Run Bias Audit</span>
+                        <div class="loading-spinner" style="display: none;"></div>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <!-- Summary Cards -->
+                <div class="summary-cards">
+                    <div class="card summary-card">
+                        <h3>Overall Bias Severity</h3>
+                        <div class="metric-value" id="overallSeverity">-</div>
+                        <div class="metric-label">Assessment</div>
+                    </div>
+                    
+                    <div class="card summary-card">
+                        <h3>Attributes Analyzed</h3>
+                        <div class="metric-value" id="attributesCount">-</div>
+                        <div class="metric-label">Protected Groups</div>
+                    </div>
+                    
+                    <div class="card summary-card">
+                        <h3>Max Bias Score</h3>
+                        <div class="metric-value" id="maxBiasScore">-</div>
+                        <div class="metric-label">Difference</div>
+                    </div>
+                    
+                    <div class="card summary-card">
+                        <h3>Total Samples</h3>
+                        <div class="metric-value" id="totalSamples">-</div>
+                        <div class="metric-label">Records</div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="charts-section">
+                    <div class="card chart-card">
+                        <h3>Accuracy by Protected Groups</h3>
+                        <canvas id="accuracyChart"></canvas>
+                    </div>
+                    
+                    <div class="card chart-card">
+                        <h3>Bias Severity Distribution</h3>
+                        <canvas id="severityChart"></canvas>
+                    </div>
+                    
+                    <div class="card chart-card">
+                        <h3>Fairness Metrics Comparison</h3>
+                        <canvas id="fairnessChart"></canvas>
+                    </div>
+                    
+                    <div class="card chart-card">
+                        <h3>Demographic Parity</h3>
+                        <canvas id="demographicChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Detailed Results Table -->
+                <div class="card table-card">
+                    <h3>Detailed Fairness Metrics</h3>
+                    <div class="table-container">
+                        <table id="resultsTable" class="results-table">
+                            <thead>
+                                <tr>
+                                    <th>Protected Attribute</th>
+                                    <th>Group</th>
+                                    <th>Sample Size</th>
+                                    <th>Accuracy</th>
+                                    <th>Precision</th>
+                                    <th>Recall</th>
+                                    <th>F1 Score</th>
+                                    <th>Positive Rate</th>
+                                    <th>Bias Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultsTableBody">
+                                <!-- Results will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Export Section -->
+                <div class="card export-card">
+                    <h3>Export Results</h3>
+                    <div class="export-buttons">
+                        <button type="button" class="btn btn-outline" onclick="exportToCSV()">
+                            📊 Export CSV
+                        </button>
+                        <button type="button" class="btn btn-outline" onclick="exportReport()">
+                            📄 Generate Report
+                        </button>
+                        <button type="button" class="btn btn-outline" onclick="exportCharts()">
+                            📈 Export Charts
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 Bias Audit Tool. Built for fairness in AI.</p>
+        </footer>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
