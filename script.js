@@ -9,7 +9,29 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeFileUpload();
     setupDragAndDrop();
     loadExistingResults();
+    initializeTheme();
 });
+
+// Theme management
+function initializeTheme() {
+    const savedTheme = localStorage.getItem('bias-audit-theme') || 'light';
+    applyTheme(savedTheme);
+    document.getElementById('themeSelect').value = savedTheme;
+}
+
+function changeTheme(theme) {
+    applyTheme(theme);
+    localStorage.setItem('bias-audit-theme', theme);
+    showToast(`Theme changed to ${theme}`, 'info');
+}
+
+function applyTheme(theme) {
+    if (theme === 'light') {
+        document.documentElement.removeAttribute('data-theme');
+    } else {
+        document.documentElement.setAttribute('data-theme', theme);
+    }
+}
 
 // File upload initialization
 function initializeFileUpload() {

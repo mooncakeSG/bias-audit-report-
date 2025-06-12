@@ -12,7 +12,18 @@
     <div class="container">
         <header class="header">
             <div class="header-content">
-                <h1><i class="icon">🛡️</i> Bias Audit Dashboard</h1>
+                <div class="header-top">
+                    <h1><i class="icon">🛡️</i> Bias Audit Dashboard</h1>
+                    <div class="theme-selector">
+                        <label for="themeSelect">Theme:</label>
+                        <select id="themeSelect" class="form-select" onchange="changeTheme(this.value)">
+                            <option value="light">Clean Light</option>
+                            <option value="dark">Dark Mode</option>
+                            <option value="blue">Soft Blue</option>
+                            <option value="ai">AI Vibes</option>
+                        </select>
+                    </div>
+                </div>
                 <p>Comprehensive ML Model Fairness Analysis</p>
             </div>
         </header>
@@ -166,7 +177,7 @@
 
         <!-- Footer -->
         <footer class="footer">
-            <p>&copy; 2024 Bias Audit Tool. Built for fairness in AI.</p>
+            <p>&copy; Bias Audit Tool. Built for fairness in AI.</p>
         </footer>
     </div>
 
