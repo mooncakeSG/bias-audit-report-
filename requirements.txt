@@ -1,9 +1,35 @@
-pandas>=1.3.0
-numpy>=1.21.0
-matplotlib>=3.4.0
-seaborn>=0.11.0
-scikit-learn>=1.0.0
+# Core Data Science Libraries
+pandas>=2.0.3
+numpy>=1.24.4
+scikit-learn>=1.2.1
+matplotlib>=3.7.0
+seaborn>=0.12.0
+scipy>=1.9.3
+
+# Fairness and Bias Detection Libraries
+fairlearn>=0.12.0
+aif360>=0.6.1
+
+# Machine Learning Libraries
+transformers>=4.21.0
+torch>=2.0.0
+datasets>=3.6.0
+
+# Visualization Libraries
+plotly>=5.15.0
+ipywidgets>=8.0.0
+
+# Additional Dependencies
+joblib>=1.2.0
+tqdm>=4.66.3
+ipython>=8.0.0
+
+# Optional (may require TensorFlow)
+# witwidget>=1.8.0  # Google What-If Tool - requires TensorFlow
+
+# Jupyter Notebook
 jupyter>=1.0.0
-ipykernel>=6.0.0
-flask>=2.0.0
-flask-cors>=4.0.0 
+notebook>=6.4.0
+
+# Statistical Libraries
+statsmodels>=0.14.0 
